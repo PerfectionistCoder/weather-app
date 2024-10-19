@@ -1,11 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-04-03",
-  modules: ["@nuxt/eslint"],
+  modules: ['@nuxt/eslint'],
   devtools: { enabled: true },
-  vite: {
-    server: {
-      open: "http://localhost:3000/",
+  compatibilityDate: '2024-04-03',
+  css: ['~/assets/css/main.css'],
+  postcss: {
+    plugins: {
+      'postcss-import': {},
+      'tailwindcss/nesting': {},
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
-});
+})
