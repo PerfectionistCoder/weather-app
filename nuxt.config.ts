@@ -1,9 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint'],
+  modules: ['@nuxt/eslint', '@nuxt/icon'],
   devtools: { enabled: false },
   compatibilityDate: '2024-04-03',
   ssr: false,
+  devServer: {
+    https: {
+      key: 'localhost-key.pem',
+      cert: 'localhost.pem',
+    },
+  },
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
