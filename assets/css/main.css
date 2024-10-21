@@ -2,14 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  @apply m-0;
+@layer base {
+  * {
+    @apply m-0;
+  }
+
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    @apply relative overflow-hidden font-sans text-gray-900;
+  }
 }
 
-html {
-  font-size: 100%;
+@layer components {
+  button {
+    @apply flex items-center gap-2 rounded border-2 border-gray-900 bg-gray-100 px-2 py-0.5 font-semibold capitalize text-gray-900 shadow shadow-gray-600;
+    svg {
+      path {
+        stroke-width: 3;
+      }
+    }
+    &.primary {
+      @apply border-blue-400 bg-blue-400 text-gray-100 shadow-blue-600;
+    }
+  }
 }
 
-body {
-  @apply relative overflow-hidden font-sans;
+@layer utilities {
+  .center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .map-components {
+    @apply z-[800];
+  }
 }
