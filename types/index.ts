@@ -1,4 +1,4 @@
-export interface Geolocation {
+export interface LatitudeLongtitude {
   lat: number
   lng: number
 }

@@ -1,22 +1,24 @@
 <template>
   <div>
     <div id="element" class="h-screen w-screen" />
-    <div class="center map-components bottom-2 flex gap-2">
+    <div
+      class="custom-viewpoint-center custom-map-components bottom-2 flex gap-2"
+    >
       <button @click="getLocation">
-        <Icon name="tabler:location" mode="svg" />
-        find your location
+        <Icon name="tabler:location" />
+        find my location
       </button>
       <button
         class="primary"
-        :disabled="locale == undefined"
+        :disabled="currentLocation == undefined"
         @click="
           () => {
-            location = locale
+            geolocation = currentLocation
             showMap = false
           }
         "
       >
-        <Icon name="tabler:check" mode="svg" />
+        <Icon name="tabler:check" />
         confirm
       </button>
     </div>
@@ -27,10 +29,10 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import markerIcon from '~/assets/icons/marker.svg'
-import type { Geolocation } from '~/types'
+import type { LatitudeLongtitude } from '~/types'
 
-const location = defineModel<Geolocation>('location')
-const locale = ref<Geolocation>()
+const { geolocation } = storeToRefs(useLocationStore())
+const currentLocation = ref<LatitudeLongtitude>()
 const showMap = defineModel<boolean>('show-map')
 
 const marker = ref<L.Marker | undefined>()
@@ -52,7 +54,7 @@ const setMarker = ({
       }),
     }).addTo(map.value)
   } else marker.value?.setLatLng(latlng)
-  locale.value = useLatLngToArray(marker.value!.getLatLng())
+  currentLocation.value = useLatLngToArray(marker.value!.getLatLng())
 }
 
 const zoom = 3
@@ -79,12 +81,12 @@ onMounted(() => {
 
   map.value.on('click', (event) => setMarker(event))
 
-  if (location.value) {
+  if (geolocation.value) {
     const latlng = [
-      location.value.lat,
-      location.value.lng,
+      geolocation.value.lat,
+      geolocation.value.lng,
     ] as L.LatLngExpression
-    map.value.setView(location.value, focusZoom)
+    map.value.setView(geolocation.value, focusZoom)
     setMarker({ latlng })
   }
 })
