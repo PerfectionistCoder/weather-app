@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --glass-bg: color-mix(in srgb, theme(colors.neutral.100), transparent 90%);
+  }
+
   * {
     @apply m-0;
   }
@@ -12,31 +16,46 @@
   }
 
   body {
-    @apply relative overflow-hidden font-sans text-gray-900;
+    @apply relative overflow-hidden bg-neutral-900 font-sans text-neutral-100;
   }
 }
 
 @layer components {
-  button {
-    @apply flex items-center gap-2 rounded border-2 border-gray-900 bg-gray-100 px-2 py-0.5 font-semibold capitalize text-gray-900 shadow shadow-gray-600;
-    svg {
-      path {
-        stroke-width: 3;
-      }
-    }
-    &.primary {
-      @apply border-blue-400 bg-blue-400 text-gray-100 shadow-blue-600;
-    }
+  .separator {
+    @apply h-0.5 w-full rounded-sm bg-[var(--glass-bg)];
   }
-}
-
-@layer utilities {
-  .center {
+  .custom-viewpoint-center {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
   }
-  .map-components {
+  .custom-map-components {
     @apply z-[800];
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply border-2 border-x-[1px] border-t-0 bg-[var(--glass-bg)] shadow-md backdrop-blur-[40px];
+    border-color: color-mix(
+      in srgb,
+      theme(colors.neutral.100),
+      transparent 95%
+    );
+    border-style: inset;
+    .glassmorphism {
+      @apply border-0 shadow-none backdrop-blur-0;
+      background-color: color-mix(
+        in srgb,
+        theme(colors.neutral.950),
+        transparent 40%
+      );
+    }
+  }
+  .glass-title {
+    color: color-mix(in srgb, theme(colors.neutral.50), transparent 10%);
+  }
+  .glass-subtle {
+    color: color-mix(in srgb, theme(colors.neutral.50), transparent 50%);
   }
 }

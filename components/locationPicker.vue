@@ -29,10 +29,9 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import markerIcon from '~/assets/icons/marker.svg'
-import type { LatitudeLongtitude } from '~/types'
 
 const { geolocation } = storeToRefs(useLocationStore())
-const currentLocation = ref<LatitudeLongtitude>()
+const currentLocation = ref<LatitudeLongitude>()
 const showMap = defineModel<boolean>('show-map')
 
 const marker = ref<L.Marker | undefined>()
