@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/icon'],
+  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@nuxt/fonts'],
   devtools: { enabled: false },
   compatibilityDate: '2024-04-03',
   ssr: false,
@@ -18,5 +18,19 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  icon: {
+    mode: 'svg',
+  },
+  components: {
+    dirs: [
+      {
+        path: '~/components',
+        pathPrefix: false,
+      },
+    ],
+  },
+  imports: {
+    dirs: ['~/stores', '~/types'],
   },
 })
