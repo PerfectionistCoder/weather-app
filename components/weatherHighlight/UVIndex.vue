@@ -7,23 +7,23 @@
       class="glass-subtle flex size-[calc(100%-3.5rem)] items-center font-bold font-dimension-[0.5rem]"
     >
       <div
-        v-for="(label, i) in indexes"
+        v-for="(step, i) in steps"
         :key="i"
         class="absolute w-full [&:is(:first-child,:last-child)>div]:-translate-y-[0.5em]"
-        :style="`rotate: ${(i / (indexes.length - 1)) * 180}deg`"
+        :style="`rotate: ${(i / (steps.length - 1)) * 180}deg`"
       >
         <div
           class="w-fit"
-          :style="`rotate: ${-((i / (indexes.length - 1)) * 180)}deg`"
+          :style="`rotate: ${-((i / (steps.length - 1)) * 180)}deg`"
         >
-          {{ label }}
+          {{ step }}
         </div>
       </div>
     </div>
     <div
       class="size-full"
       :style="{
-        'mask-image': `conic-gradient(from -90deg, rgb(0 0 0/0.1), black ${progress * 50 - progress * 5}%)`,
+        'mask-image': `conic-gradient(from -90deg, rgb(0 0 0/0.1), rgb(0 0 0/0.8), black ${progress * 50 - progress * 5}%)`,
       }"
     >
       <div
@@ -41,31 +41,41 @@
   <FooterLabel class="text-center">
     <div class="h-full"></div>
     <div class="data-font">
-      <span>{{ data.current.uv }}</span>
+      <span>{{ uv }}</span>
     </div>
-    <span class="unit-font capitalize">{{ table[5] }}</span>
+    <span class="unit-font !mt-0 capitalize">{{ label }}</span>
   </FooterLabel>
 </template>
 
 <script lang="ts" setup>
 const { data } = storeToRefs(useDataStore())
 
-const progress = computed(() => Math.min(1, 11) / 11)
-const table = [
-  'low',
-  'low',
-  'low',
-  'moderate',
-  'moderate',
-  'moderate',
-  'high',
-  'high',
-  'very high',
-  'very high',
-  'very high',
-  'extreme',
+const uv = computed(() => data.value.current.uv)
+const labels = [
+  {
+    d: 2,
+    w: 'low',
+  },
+  {
+    d: 5,
+    w: 'moderate',
+  },
+  {
+    d: 7,
+    w: 'high',
+  },
+  {
+    d: 10,
+    w: 'very high',
+  },
+  {
+    d: 11,
+    w: 'extreme',
+  },
 ]
-const indexes = ['0', '2', '5', '7', '10', '11+']
+const { progress, label } = useProgressWithLabel(labels, uv)
+
+const steps = ['0'].concat(labels.map((e) => e.d.toString()))
 </script>
 
 <style scoped>

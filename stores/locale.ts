@@ -7,9 +7,15 @@ export const useLocaleStore = defineStore('locale', () => {
 
   const speedSymbol = ref<'km/h' | 'mph'>('km/h')
 
+  const distanceSymbol = ref<'km' | 'mi'>('km')
+
+  const airQualityIndex = ref<'us-epa-index' | 'gb-defra-index'>('us-epa-index')
+
   return {
     locale,
     localeTempSymbol,
     speedSymbol,
+    distanceSymbol,
+    airQualityIndex
   }
 })

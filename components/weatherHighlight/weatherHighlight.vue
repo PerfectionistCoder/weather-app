@@ -3,21 +3,25 @@
     <template #default>
       <div class="ml-1 text-xs font-medium">Today's Highlight</div>
       <div
-        class="mt-3 grid grid-cols-3 grid-rows-[repeat(2,auto)] gap-3 gap-x-3 gap-y-2"
+        class="mt-3 grid grid-cols-3 grid-rows-[repeat(2,auto)] gap-3 gap-x-4 gap-y-3"
       >
         <div
-          v-for="(col, i) in row1"
+          v-for="(col, i) in rows"
           :key="col.name"
-          class="glassmorphism flex flex-col rounded-[0.75rem] p-4 pb-2"
-          :class="[6 / i >= 3 ? 'size-[200px]' : 'h-20']"
+          class="glassmorphism flex flex-col rounded-[0.75rem] p-4 pb-2.5"
+          :class="[6 / i >= 3 ? 'size-[200px]' : 'w-[200px]']"
         >
           <div
-            class="glass-title flex items-center text-sm font-medium capitalize tracking-wider"
+            class="glass-title flex w-full items-center text-xs font-medium capitalize tracking-wider"
           >
-            <Icon :name="col.icon" class="text-[1.5em]"></Icon>
+            <Icon :name="`tabler:${col.icon}`" class="text-[1.25em]"></Icon>
             <span class="ml-2">{{ col.name }}</span>
           </div>
-          <div class="flex h-full flex-col overflow-hidden">
+          <div
+            class="flex h-full w-full flex-col"
+            :class="{ 'overflow-hidden': 6 / i >= 3 }"
+          >
+            <div v-if="6 / i < 3" class="h-full min-h-2"></div>
             <component :is="col.component"></component>
           </div>
         </div>
@@ -27,25 +31,43 @@
 </template>
 
 <script lang="ts" setup>
+import AirPollution from './airPollution.vue'
+import Humidity from './humidity.vue'
 import SunriseSunset from './sunriseSunset.vue'
 import UVIndex from './UVIndex.vue'
+import Visibility from './visibility.vue'
 import WindStatus from './windStatus.vue'
 
-const row1 = markRaw([
+const rows = markRaw([
   {
     name: 'wind status',
-    icon: 'tabler:wind',
+    icon: 'wind',
     component: WindStatus,
   },
   {
     name: 'UV index',
-    icon: 'tabler:sun-low',
+    icon: 'sun-low',
     component: UVIndex,
   },
   {
     name: 'sunrise & sunset',
-    icon: 'tabler:sunset-2',
+    icon: 'sunset-2',
     component: SunriseSunset,
+  },
+  {
+    name: 'humidity',
+    icon: 'droplet-half-filled',
+    component: Humidity,
+  },
+  {
+    name: 'visibility',
+    icon: 'eye',
+    component: Visibility,
+  },
+  {
+    name: 'air pollution',
+    icon: 'atom',
+    component: AirPollution,
   },
 ])
 </script>
