@@ -41,7 +41,9 @@
       }"
     >
       <div class="flex items-center justify-center">
-        <span class="absolute -mt-32 size-32 rounded-full bg-yellow-400 blur-[32px]"></span>
+        <span
+          class="absolute -mt-32 size-32 rounded-full bg-yellow-400 blur-[32px]"
+        ></span>
       </div>
     </div>
     <div
@@ -85,8 +87,8 @@
         class="flex flex-col gap-0.5 first:items-start last:items-end"
       >
         <Icon
-          class="text-[1.2rem] text-[color-mix(in_srgb,white,transparent_70%)]"
-          :name="`tabler:${icon}`"
+          class="-mb-0.5 text-[1.5rem] text-[color-mix(in_srgb,white,transparent_70%)]"
+          :name="`wi:${icon}`"
         >
         </Icon>
         <div

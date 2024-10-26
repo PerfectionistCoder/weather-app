@@ -53,9 +53,9 @@
     }
   }
   .glass-title {
-    color: color-mix(in srgb, theme(colors.neutral.50), transparent 10%);
+    color: color-mix(in srgb, theme(colors.neutral.50), transparent 20%);
   }
   .glass-subtle {
-    color: color-mix(in srgb, theme(colors.neutral.50), transparent 50%);
+    color: color-mix(in srgb, theme(colors.neutral.50), transparent 60%);
   }
 }
