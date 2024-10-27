@@ -8,8 +8,8 @@
         <div
           v-for="(col, i) in rows"
           :key="col.name"
-          class="glassmorphism flex flex-col rounded-[0.75rem] p-4 pb-2.5"
-          :class="[6 / i >= 3 ? 'size-[200px]' : 'w-[200px]']"
+          class="glassmorphism flex flex-col rounded-[0.75rem] p-4 pb-2.5 w-[200px]"
+          :class="[6 / i >= 3 ? 'h-[200px]' : '']"
         >
           <div
             class="glass-title flex w-full items-center text-xs font-medium capitalize tracking-wider"

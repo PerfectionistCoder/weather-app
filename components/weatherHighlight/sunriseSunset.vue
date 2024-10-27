@@ -4,7 +4,7 @@
       v-for="i in 2"
       :key="i"
       viewBox="0 0 100 100"
-      :style="`rotate: ${is_day ? deg : -90}deg`"
+      :style="`rotate: ${isDay ? deg : -90}deg`"
       class="first:blur-sm"
     >
       <defs>
@@ -12,13 +12,9 @@
           <stop
             offset="50%"
             stop-color="currentColor"
-            class="text-yellow-400"
+            :style="{ color: `${glowColor}` }"
           />
-          <stop
-            offset="50%"
-            stop-color="currentColor"
-            class="text-[color-mix(in_srgb,white,transparent_80%)]"
-          />
+          <stop offset="50%" stop-color="currentColor" :class="`${dimColor}`" />
         </linearGradient>
       </defs>
       <circle
@@ -32,7 +28,7 @@
       />
     </svg>
     <div
-      v-if="is_day"
+      v-if="isDay"
       class="overflow-hidden"
       :style="{
         width: `${sizePercent}%`,
@@ -42,12 +38,13 @@
     >
       <div class="flex items-center justify-center">
         <span
-          class="absolute -mt-32 size-32 rounded-full bg-yellow-400 blur-[32px]"
+          class="absolute -mt-32 size-32 rounded-full bg-current blur-[32px]"
+          :style="{ color: `${glowColor}` }"
         ></span>
       </div>
     </div>
     <div
-      v-if="is_day"
+      v-if="isDay"
       :style="{
         height: `${sizePercent}%`,
         rotate: `${deg}deg`,
@@ -56,7 +53,8 @@
       <div class="flex items-center justify-center">
         <Icon
           name="tabler:sun-filled"
-          class="absolute text-[1.5rem] text-yellow-400"
+          class="absolute text-[1.5rem]"
+          :style="{ color: `${glowColor}` }"
         ></Icon>
       </div>
     </div>
@@ -65,7 +63,7 @@
     <div class="relative flex items-center justify-center">
       <div
         :class="`absolute flex justify-between`"
-        :style="{ width: `calc(${sizePercent}% - 0.5rem)` }"
+        :style="{ width: `calc(${sizePercent}%)` }"
       >
         <div
           v-for="i in 2"
@@ -73,32 +71,31 @@
           :class="`flex items-center justify-center`"
         >
           <div
-            class="absolute h-1 w-3 rounded-sm bg-yellow-400 shadow-[0_0_0.5rem_theme(colors.yellow.400)]"
+            class="absolute h-1 w-3 rounded-sm bg-current shadow-[0_0_0.5rem] shadow-current"
+            :style="{ color: `${glowColor}` }"
           ></div>
         </div>
       </div>
       <span class="separator h-[1px]"></span>
     </div>
     <div class="h-full"></div>
-    <div class="flex w-full justify-between px-2">
+    <div class="flex w-full justify-between">
       <div
-        v-for="icon in ['sunrise', 'sunset'] as const"
-        :key="icon"
+        v-for="(value, key) in icons"
+        :key="key"
         class="flex flex-col gap-0.5 first:items-start last:items-end"
       >
-        <Icon
-          class="-mb-0.5 text-[1.5rem] text-[color-mix(in_srgb,white,transparent_70%)]"
-          :name="`wi:${icon}`"
-        >
+        <Icon :class="`-mb-1 text-[1.5rem] ${dimColor}`" :name="`wi:${value}`">
         </Icon>
         <div
-          class="font-bold capitalize text-yellow-400 font-dimension-[0.6rem]"
+          class="font-bold capitalize font-dimension-[0.6rem]"
+          :style="{ color: `${glowColor}` }"
         >
-          {{ icon }}
+          {{ value }}
         </div>
         <div class="font-bold font-dimension-[0.7rem]">
           {{
-            new Date(sunTime[icon]).toLocaleTimeString(locale, {
+            new Date(bound[key]).toLocaleTimeString(locale, {
               hour: '2-digit',
               minute: '2-digit',
             })
@@ -110,22 +107,22 @@
 </template>
 
 <script lang="ts" setup>
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '~/tailwind.config'
+const fullConfig = resolveConfig(tailwindConfig)
+
 const {
   data: {
     value: {
-      current: { is_day },
       forecast: {
-        forecastday: [
-          {
-            astro: { sunrise, sunset },
-          },
-        ],
+        forecastday: [{ astro }],
       },
     },
   },
 } = storeToRefs(useDataStore())
 const { locale } = storeToRefs(useLocaleStore())
 const { timestamp } = storeToRefs(useNowStore())
+// const timestamp = ref(new Date().setHours(9))
 
 const parseTime = (str: string) => {
   const [hr, min, dayPeriod] = str
@@ -138,18 +135,28 @@ const parseTime = (str: string) => {
     min
   )
 }
-const sunTime = computed(() => ({
-  sunrise: parseTime(sunrise),
-  sunset: parseTime(sunset),
+
+const icons = {
+  min: 'sunrise',
+  max: 'sunset',
+} as const
+const bound = computed(() => ({
+  min: parseTime(astro[icons.min]),
+  max: parseTime(astro[icons.max]),
 }))
+const isDay = computed(
+  () => bound.value.min < timestamp.value && timestamp.value < bound.value.max
+)
 
 const sizePercent = 80
 const r = 50 * (sizePercent / 100)
 
+const glowColor = fullConfig.theme.colors.yellow[400]
+const dimColor = 'text-[color-mix(in_srgb,white,transparent_70%)]'
+
 const progress = computed(
   () =>
-    (new Date().setHours(13) - sunTime.value.sunrise) /
-    (sunTime.value.sunset - sunTime.value.sunrise)
+    (timestamp.value - bound.value.min) / (bound.value.max - bound.value.min)
 )
 const tan = computed(() => {
   const x = progress.value

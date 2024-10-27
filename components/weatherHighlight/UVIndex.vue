@@ -75,7 +75,7 @@ const labels = [
 ]
 const { progress, label } = useProgressWithLabel(labels, uv)
 
-const steps = ['0'].concat(labels.map((e) => e.d.toString()))
+const steps = ['0', '2', '5', '7', '9', '11']
 </script>
 
 <style scoped>
@@ -91,7 +91,7 @@ const steps = ['0'].concat(labels.map((e) => e.d.toString()))
       theme(colors.lime.500) 0%,
       theme(colors.yellow.500) 10%,
       theme(colors.orange.500) 20%,
-      theme(colors.red.500) 35%,
+      theme(colors.red.500) 40%,
       theme(colors.violet.500) 50%,
       transparent 50%
     )
