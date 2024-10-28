@@ -1,4 +1,4 @@
-export const useGetImage = (code: Ref<number | string>, is_day: any) => {
+export const useWeatherImage = (code: Ref<number | string>, is_day: Ref<number>) => {
   const img2Code: { name: string; codes: string[]; dn?: true }[] = [
     {
       name: 'clear',
@@ -104,7 +104,7 @@ export const useGetImage = (code: Ref<number | string>, is_day: any) => {
   const imgName = computed(() => {
     for (const img of img2Code) {
       if (img.codes.includes(code.value.toString()))
-        return img.name + (img.dn ? (is_day ? '_d' : '_n') : '')
+        return img.name + (img.dn ? (is_day.value ? '_d' : '_n') : '')
     }
     return ''
   })

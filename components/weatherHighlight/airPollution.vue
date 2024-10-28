@@ -7,7 +7,7 @@
       {{ label }}
     </div>
   </div>
-  <div class="mt-2 mb-1">
+  <div class="mb-1 mt-2">
     <div class="scale relative flex h-0.5 w-full items-center rounded">
       <span
         class="absolute size-1 rounded-full border-2 bg-current shadow-[0_0_0.2rem_0.1rem] shadow-current"
@@ -18,19 +18,13 @@
 </template>
 
 <script lang="ts" setup>
-const {
-  data: {
-    value: {
-      current: {
-        air_quality: { 'us-epa-index': usIndex, 'gb-defra-index': gbIndex },
-      },
-    },
-  },
-} = storeToRefs(useDataStore())
+const { data } = storeToRefs(useDataStore())
 const { airQualityIndex } = storeToRefs(useLocaleStore())
 
 const index = computed(() =>
-  airQualityIndex.value == 'us-epa-index' ? usIndex : gbIndex
+  airQualityIndex.value == 'us-epa-index'
+    ? data.value.current.air_quality['us-epa-index']
+    : data.value.current.air_quality['gb-defra-index']
 )
 const usLabels = [
   { w: 'good' },

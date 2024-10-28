@@ -2,25 +2,35 @@
   <CustomPanel>
     <template #default>
       <div class="relative h-full w-full">
-        <div class="absolute z-[1] flex w-full justify-end">
-          <button class="glassmorphism flex rounded-full p-3">
-            <Icon name="tabler:arrows-exchange" size="24" />
-          </button>
-        </div>
-        <div class="absolute bottom-0 flex w-full flex-col gap-1">
-          <div class="flex *:leading-[1em]">
-            <div class="text-[3.5em]">{{ 28 }}</div>
-            <div class="text-[3em]">&deg;</div>
-            <div class="mt-1 text-[2em] font-bold">
-              {{ localeTempSymbol }}
+        <img
+          :src="`/images/${imgName}.png`"
+          class="absolute right-0 top-2 w-40"
+        />
+        <div class="absolute bottom-0 flex w-full flex-col">
+          <div class="flex flex-col font-dimension-[1rem]">
+            <span class="font-dimension-[4rem]"
+              >{{ localeTemp(data.current, 'temp') }}&deg;</span
+            >
+            <div class="flex gap-1 *:flex *:items-center">
+              <div>
+                <Icon name="tabler:arrow-up" class="text-[1.2em]"></Icon>
+                <div>
+                  {{
+                    localeTemp(data.forecast.forecastday[0].day, 'maxtemp')
+                  }}&deg;
+                </div>
+              </div>
+              <div>
+                <Icon name="tabler:arrow-down" class="text-[1.2em]"></Icon>
+                <div>
+                  {{
+                    localeTemp(data.forecast.forecastday[0].day, 'mintemp')
+                  }}&deg;
+                </div>
+              </div>
             </div>
           </div>
-          <div class="mt-1 flex items-center gap-1">
-            <Icon name="wi:rain-mix" size="36" />
-            <span class="text-sm font-medium capitalize">{{
-              'Rainy Storm Clouds'
-            }}</span>
-          </div>
+          <span class="my-1 capitalize">{{ data.current.condition.text }}</span>
           <span class="separator my-2"></span>
           <div
             class="mt-2 flex flex-col gap-3 *:flex *:items-center *:gap-2 *:text-xs"
@@ -36,24 +46,23 @@
     </template>
     <template #bg>
       <span
-        class="absolute h-24 w-32 bg-sky-500 opacity-30"
+        class="absolute h-[40%] w-[45%] bg-current"
+        :style="{ color: colors[0] }"
+        style="border-radius: 50%; translate: -50% -40%"
+      ></span>
+      <span
+        class="absolute h-[50%] w-[60%] bg-current"
+        :style="{ color: colors[1] }"
         style="
-          border-radius: 5rem 10rem 10rem 5rem / 4rem 5rem 5rem 4rem;
-          translate: -2rem 5rem;
+          border-radius: 30% 50% 50% 30% / 20% 30% 30% 20%;
+          translate: -20% 60%;
           rotate: -10deg;
         "
       ></span>
       <span
-        class="absolute h-24 w-24 bg-purple-500 opacity-30"
-        style="border-radius: 5rem / 4rem; translate: -3rem -4rem"
-      ></span>
-      <span
-        class="absolute h-52 w-20 bg-blue-500 opacity-30"
-        style="
-          border-radius: 15rem / 30rem;
-          translate: 5rem -1rem;
-          rotate: -10deg;
-        "
+        class="absolute h-[80%] w-[40%] bg-current"
+        :style="{ color: colors[2] }"
+        style="border-radius: 50% / 40%; translate: 60%; rotate: -10deg"
       ></span>
     </template>
   </CustomPanel>
@@ -61,5 +70,11 @@
 
 <script lang="ts" setup>
 const { data } = storeToRefs(useDataStore())
-const { localeTempSymbol } = storeToRefs(useLocaleStore())
+const { localeTemp } = useLocaleStore()
+
+const weatherCode = computed(() => data.value.current.condition.code)
+const is_day = computed(() => data.value.current.is_day)
+const { imgName } = useWeatherImage(weatherCode, is_day)
+
+const colors = useBgColor(is_day)
 </script>

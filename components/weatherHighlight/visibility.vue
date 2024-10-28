@@ -2,7 +2,7 @@
   <div class="flex items-end justify-between">
     <div>
       <span class="data-font">{{
-        distanceSymbol == 'km' ? vis_km : vis_miles
+        localeDistance(data.current, 'vis')
       }}</span>
       <span class="unit-font">{{ distanceSymbol }}</span>
     </div>
@@ -37,16 +37,11 @@
 </template>
 
 <script lang="ts" setup>
-const {
-  data: {
-    value: {
-      current: { vis_km, vis_miles },
-    },
-  },
-} = storeToRefs(useDataStore())
+const { data } = storeToRefs(useDataStore())
 const { distanceSymbol } = storeToRefs(useLocaleStore())
+const {localeDistance} = useLocaleStore()
 
-const distance = computed(() => vis_km)
+const distance = computed(() => data.value.current.vis_km)
 const labels = [
   {
     d: 0,

@@ -2,7 +2,7 @@
   <div class="flex h-full items-center justify-center *:size-[100px]">
     <div class="relative flex items-center justify-center">
       <div
-        class="glass-subtle *:font-dimension-[0.75rem] absolute flex size-[105%] items-center justify-center *:absolute *:font-bold"
+        class="glass-subtle absolute flex size-[105%] items-center justify-center *:absolute *:font-bold *:font-dimension-[0.75rem]"
       >
         <span class="top-0">N</span>
         <span class="right-0">E</span>
@@ -39,18 +39,18 @@
         </div>
       </div>
       <div class="absolute text-center">
-        <div class="font-dimension-[1.25rem] glass-title -ml-1 font-bold">
+        <div class="glass-title -ml-1 font-bold font-dimension-[1.25rem]">
           {{ data.current.wind_degree }}
           <span class="absolute">&deg;</span>
         </div>
-        <div class="font-dimension-[0.75rem] glass-subtle">
+        <div class="glass-subtle font-dimension-[0.75rem]">
           {{ data.current.wind_dir }}
         </div>
       </div>
     </div>
   </div>
   <div class="data-font text-center">
-    <span>{{ 25 }}</span>
+    <span>{{ localeSpeed(data.current, 'wind') }}</span>
     <span class="unit-font">{{ speedSymbol }}</span>
   </div>
 </template>
@@ -58,6 +58,7 @@
 <script lang="ts" setup>
 const { data } = storeToRefs(useDataStore())
 const { speedSymbol } = storeToRefs(useLocaleStore())
+const { localeSpeed } = useLocaleStore()
 
 const divider = 12
 </script>

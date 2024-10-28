@@ -9,11 +9,7 @@
     >
       <defs>
         <linearGradient id="dash">
-          <stop
-            offset="50%"
-            stop-color="currentColor"
-            :style="{ color: `${glowColor}` }"
-          />
+          <stop offset="50%" stop-color="currentColor" :class="glowColor" />
           <stop offset="50%" stop-color="currentColor" :class="`${dimColor}`" />
         </linearGradient>
       </defs>
@@ -39,7 +35,7 @@
       <div class="flex items-center justify-center">
         <span
           class="absolute -mt-32 size-32 rounded-full bg-current blur-[32px]"
-          :style="{ color: `${glowColor}` }"
+          :class="glowColor"
         ></span>
       </div>
     </div>
@@ -54,7 +50,7 @@
         <Icon
           name="tabler:sun-filled"
           class="absolute text-[1.5rem]"
-          :style="{ color: `${glowColor}` }"
+          :class="glowColor"
         ></Icon>
       </div>
     </div>
@@ -72,7 +68,7 @@
         >
           <div
             class="absolute h-1 w-3 rounded-sm bg-current shadow-[0_0_0.5rem] shadow-current"
-            :style="{ color: `${glowColor}` }"
+            :class="glowColor"
           ></div>
         </div>
       </div>
@@ -89,7 +85,7 @@
         </Icon>
         <div
           class="font-bold capitalize font-dimension-[0.6rem]"
-          :style="{ color: `${glowColor}` }"
+          :class="glowColor"
         >
           {{ value }}
         </div>
@@ -107,19 +103,7 @@
 </template>
 
 <script lang="ts" setup>
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '~/tailwind.config'
-const fullConfig = resolveConfig(tailwindConfig)
-
-const {
-  data: {
-    value: {
-      forecast: {
-        forecastday: [{ astro }],
-      },
-    },
-  },
-} = storeToRefs(useDataStore())
+const { data } = storeToRefs(useDataStore())
 const { locale } = storeToRefs(useLocaleStore())
 const { timestamp } = storeToRefs(useNowStore())
 // const timestamp = ref(new Date().setHours(9))
@@ -141,8 +125,8 @@ const icons = {
   max: 'sunset',
 } as const
 const bound = computed(() => ({
-  min: parseTime(astro[icons.min]),
-  max: parseTime(astro[icons.max]),
+  min: parseTime(data.value.forecast.forecastday[0].astro[icons.min]),
+  max: parseTime(data.value.forecast.forecastday[0].astro[icons.max]),
 }))
 const isDay = computed(
   () => bound.value.min < timestamp.value && timestamp.value < bound.value.max
@@ -151,7 +135,7 @@ const isDay = computed(
 const sizePercent = 80
 const r = 50 * (sizePercent / 100)
 
-const glowColor = fullConfig.theme.colors.yellow[400]
+const glowColor = 'text-yellow-400'
 const dimColor = 'text-[color-mix(in_srgb,white,transparent_70%)]'
 
 const progress = computed(
