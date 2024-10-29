@@ -2,36 +2,17 @@
   <CustomPanel>
     <template #default>
       <div class="relative h-full w-full">
-        <img
-          :src="`/images/${imgName}.png`"
-          class="absolute right-0 top-2 w-40"
-        />
-        <div class="absolute bottom-0 flex w-full flex-col">
-          <div class="flex flex-col font-dimension-[1rem]">
-            <span class="font-dimension-[4rem]"
-              >{{ localeTemp(data.current, 'temp') }}&deg;</span
-            >
-            <div class="flex gap-1 *:flex *:items-center">
-              <div>
-                <Icon name="tabler:arrow-up" class="text-[1.2em]"></Icon>
-                <div>
-                  {{
-                    localeTemp(data.forecast.forecastday[0].day, 'maxtemp')
-                  }}&deg;
-                </div>
-              </div>
-              <div>
-                <Icon name="tabler:arrow-down" class="text-[1.2em]"></Icon>
-                <div>
-                  {{
-                    localeTemp(data.forecast.forecastday[0].day, 'mintemp')
-                  }}&deg;
-                </div>
-              </div>
-            </div>
+        <div class="absolute bottom-0 flex w-full flex-col gap-2">
+          <div><img :src="`/images/${imgName}.svg`" class="mb-2 h-28" /></div>
+          <div class="flex font-dimension-[4rem]">
+            <span>{{ localeTemp(data.current, 'temp') }}</span>
+            <span class="font-dimension-[3.5rem]">&deg;</span>
+            <span class="mt-2 font-bold font-dimension-[2rem]">{{
+              tempSymbol
+            }}</span>
           </div>
-          <span class="my-1 capitalize">{{ data.current.condition.text }}</span>
-          <span class="separator my-2"></span>
+          <span class="capitalize">{{ data.current.condition.text }}</span>
+          <span class="separator"></span>
           <div
             class="mt-2 flex flex-col gap-3 *:flex *:items-center *:gap-2 *:text-xs"
           >
@@ -70,11 +51,12 @@
 
 <script lang="ts" setup>
 const { data } = storeToRefs(useDataStore())
+const { tempSymbol } = storeToRefs(useLocaleStore())
 const { localeTemp } = useLocaleStore()
 
 const weatherCode = computed(() => data.value.current.condition.code)
 const is_day = computed(() => data.value.current.is_day)
-const { imgName } = useWeatherImage(weatherCode, is_day)
+const imgName = useWeatherImage(weatherCode, is_day)
 
 const colors = useBgColor(is_day)
 </script>
