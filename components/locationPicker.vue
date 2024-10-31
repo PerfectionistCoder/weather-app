@@ -11,12 +11,7 @@
       <button
         class="primary"
         :disabled="currentLocation == undefined"
-        @click="
-          () => {
-            geolocation = currentLocation
-            showMap = false
-          }
-        "
+        @click="done()"
       >
         <Icon name="tabler:check" />
         confirm
@@ -29,10 +24,12 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import markerIcon from '~/assets/icons/marker.svg'
+import type { LatitudeLongitude } from '~/types'
 
 const { geolocation } = storeToRefs(useLocationStore())
 const currentLocation = ref<LatitudeLongitude>()
 const showMap = defineModel<boolean>('show-map')
+const { getData } = useDataStore()
 
 const marker = ref<L.Marker | undefined>()
 const setMarker = ({
@@ -61,6 +58,8 @@ const minZoom = 2
 const maxZoom = 17
 const focusZoom = 10
 
+const size = 256
+
 const map = ref<L.Map | undefined>()
 onMounted(() => {
   map.value = L.map('element', {
@@ -74,9 +73,9 @@ onMounted(() => {
     maxZoom,
   })
   map.value.removeControl(map.value.zoomControl)
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png')
-    .setZIndex(0)
-    .addTo(map.value)
+  L.tileLayer(`https://localhost:3000/api/map/${size}/{z}/{x}/{y}`, {
+    tileSize: size,
+  }).addTo(map.value)
 
   map.value.on('click', (event) => setMarker(event))
 
@@ -114,6 +113,16 @@ const getLocation = () => {
     )
   } else alert('Geolocation is not supported by this browser.')
 }
+
+const done = async () => {
+  await getData(currentLocation.value.lat, currentLocation.value.lng)
+  geolocation.value = currentLocation.value
+  showMap.value = false
+}
 </script>
 
-<style></style>
+<style scoped lang="postcss">
+button {
+  @apply flex items-center gap-2 rounded-[0.5rem] bg-neutral-900 p-2 font-medium capitalize shadow disabled:opacity-70;
+}
+</style>
