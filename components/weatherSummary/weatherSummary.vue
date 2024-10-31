@@ -3,7 +3,7 @@
     <template #default>
       <div class="relative h-full w-full">
         <div class="absolute bottom-0 flex w-full flex-col gap-2">
-          <div><img :src="`/images/${imgName}.svg`" class="mb-2 h-28" /></div>
+          <div><img :src="`/images/${imgName}`" class="mb-2 h-28" /></div>
           <div class="flex font-dimension-[4rem]">
             <span>{{ localeTemp(data.current, 'temp') }}</span>
             <span class="font-dimension-[3.5rem]">&deg;</span>

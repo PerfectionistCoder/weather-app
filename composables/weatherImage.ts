@@ -67,7 +67,7 @@ export const img2Code: { name: string; codes: string[]; dn?: true }[] = [
   {
     name: 'rain_with_thunder',
     codes: ['1273', '1276'],
-  }
+  },
 ]
 
 export const useWeatherImage = (
@@ -77,7 +77,7 @@ export const useWeatherImage = (
   const imgName = computed(() => {
     for (const img of img2Code) {
       if (img.codes.includes(code.value.toString()))
-        return img.name + (img.dn ? (is_day.value ? '_d' : '_n') : '')
+        return img.name + (img.dn ? (is_day.value ? '_d' : '_n') : '') + '.svg'
     }
     return ''
   })

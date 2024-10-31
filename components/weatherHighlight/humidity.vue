@@ -4,7 +4,7 @@
       <span class="data-font">{{ data.current.humidity }}</span>
       <span class="unit-font">%</span>
     </div>
-    <div class="glass-title text-[0.65rem]">
+    <div class="glass-subtle text-[0.65rem]">
       The dew point is {{ localeTemp(data.current, 'dewpoint') }}&deg;<br />
       right now
     </div>

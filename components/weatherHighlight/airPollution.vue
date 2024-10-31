@@ -2,7 +2,7 @@
   <div class="flex items-end justify-between gap-2">
     <div class="data-font">{{ index }}</div>
     <div
-      class="glass-title w-3/5 text-right capitalize font-dimension-[0.75rem]"
+      class="glass-subtle w-3/5 text-right capitalize font-dimension-[0.75rem]"
     >
       {{ label }}
     </div>
