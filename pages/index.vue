@@ -4,10 +4,12 @@
   </div>
   <div v-else class="flex h-screen w-screen items-center justify-center">
     <div
-      class="grid h-min w-full max-w-fit grid-cols-3 content-center justify-center gap-4 *:row-span-1"
+      class="grid h-min w-full max-w-fit grid-cols-[repeat(3,320px)] content-center justify-center gap-4"
     >
       <WeatherSummary />
       <WeatherHighlight />
+      <WeatherForecast />
+      <WeatherMap />
     </div>
   </div>
 </template>
@@ -21,7 +23,7 @@ onMounted(() => {
   start()
 })
 
-const showMap = ref(false)
+const showMap = ref(true)
 </script>
 
 <style lang="postcss"></style>
