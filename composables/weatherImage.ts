@@ -77,7 +77,7 @@ export const useWeatherImage = (
   const imgName = computed(() => {
     for (const img of img2Code) {
       if (img.codes.includes(code.value.toString()))
-        return img.name + (img.dn ? (is_day.value ? '_d' : '_n') : '') + '.svg'
+        return img.name + (img.dn ? (is_day.value ? '_d' : '_n') : '') + '.png'
     }
     return ''
   })
