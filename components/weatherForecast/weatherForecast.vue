@@ -6,9 +6,11 @@
         class="glassmorphism mt-2 flex w-full flex-col items-center justify-between rounded-[1rem] px-4 py-2"
       >
         <div class="flex w-full items-center gap-4">
-          <div class="flex size-10 flex-col items-center gap-0.5">
+          <div
+            class="flex size-10 flex-col items-center justify-center gap-0.5"
+          >
             <img
-              :class="[precipChance ? 'size-8' : 'size-10']"
+              class="h-7"
               :src="`/images/${useWeatherImage(toRef(tomorrow.day.condition.code), toRef(1)).value}`"
             />
             <div
@@ -37,9 +39,9 @@
           :key="day.date_epoch"
           class="glass-subtle grid grid-cols-3 items-center justify-between font-dimension-[0.75rem]"
         >
-          <div class="flex items-center">
+          <div class="flex size-10 items-center justify-center">
             <img
-              class="size-10"
+              class="h-7"
               :src="`/images/${useWeatherImage(toRef(day.day.condition.code), toRef(1)).value}`"
             />
           </div>

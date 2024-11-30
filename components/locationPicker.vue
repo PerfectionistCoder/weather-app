@@ -1,21 +1,15 @@
 <template>
   <div>
-    <div id="element" class="h-screen w-screen" />
-    <div
-      class="custom-viewpoint-center custom-map-components bottom-2 flex gap-2"
-    >
-      <button @click="getLocation">
-        <Icon name="tabler:location" />
-        find my location
-      </button>
-      <button
-        class="primary"
-        :disabled="currentLocation == undefined"
-        @click="done()"
+    <div id="map" class="h-screen w-screen">
+      <ZoomInOut :map="map"></ZoomInOut>
+      <div
+        class="custom-viewpoint-center custom-map-components *:custom-map-button bottom-2 flex gap-2 text-[1rem] *:flex *:items-center *:px-3 *:py-1.5"
       >
-        <Icon name="tabler:check" />
-        confirm
-      </button>
+        <button @click="getLocation">find my location</button>
+        <button :disabled="currentLocation == undefined" @click="exit()">
+          confirm
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +23,7 @@ import type { LatitudeLongitude } from '~/types'
 const { geolocation } = storeToRefs(useLocationStore())
 const currentLocation = ref<LatitudeLongitude>()
 const showMap = defineModel<boolean>('show-map')
-const { getData } = useDataStore()
+const { data } = storeToRefs(useDataStore())
 
 const marker = ref<L.Marker | undefined>()
 const setMarker = ({
@@ -62,7 +56,7 @@ const size = 256
 
 const map = ref<L.Map | undefined>()
 onMounted(() => {
-  map.value = L.map('element', {
+  map.value = L.map('map', {
     attributionControl: false,
     boxZoom: false,
     center: [0, 0],
@@ -114,15 +108,16 @@ const getLocation = () => {
   } else alert('Geolocation is not supported by this browser.')
 }
 
-const done = async () => {
-  await getData(currentLocation.value.lat, currentLocation.value.lng)
+const exit = async () => {
+  const res = await $fetch('/api/data', {
+    query: currentLocation.value,
+  })
+
+  data.value = res
+
   geolocation.value = currentLocation.value
   showMap.value = false
 }
 </script>
 
-<style scoped lang="postcss">
-button {
-  @apply flex items-center gap-2 rounded-[0.5rem] bg-neutral-900 p-2 font-medium capitalize shadow disabled:opacity-70;
-}
-</style>
+<style scoped lang="postcss"></style>

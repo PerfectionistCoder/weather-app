@@ -4,7 +4,7 @@
   </div>
   <div v-else class="flex h-screen w-screen items-center justify-center">
     <div
-      class="grid h-min w-full max-w-fit grid-cols-[repeat(3,320px)] content-center justify-center gap-4"
+      class="grid grid-cols-[repeat(3,320px)] grid-rows-[auto,20rem] content-center justify-center gap-4"
     >
       <WeatherSummary />
       <WeatherHighlight />

@@ -1,17 +1,8 @@
 import { defineStore } from 'pinia'
+import json from '../test-data.json'
 
 export const useDataStore = defineStore('data', () => {
-  const data = ref()
-  const getData = async (lat: number, lng: number) => {
-    const { data: res } = await useFetch('/api/data', {
-      query: {
-        lat,
-        lng,
-      },
-    })
+  const data = ref(json)
 
-    data.value = res.value
-  }
-
-  return { data, getData }
+  return { data }
 })
